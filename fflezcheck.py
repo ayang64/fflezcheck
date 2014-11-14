@@ -8,6 +8,9 @@ from lxml import etree
 
 opener = urllib2.build_opener()
 order = sys.argv[1]
+
+
+# fflSearch.do expects the following variables.
 values = {
 	'licsRegn'	:	sys.argv[2],
 	'licsDis'		:	sys.argv[3],
@@ -22,8 +25,10 @@ contents = response.read()
 
 tree = etree.HTML(contents)
 
-p = tree.xpath('/html/body/table/tr/td/table/tr/td/table/tr/td/table/tr[1]/td[1]/p/b/text()')
 
+# Check if we received a positive result. A successful query will have
+# the words "License Number" in the element described below.
+p = tree.xpath('/html/body/table/tr/td/table/tr/td/table/tr/td/table/tr[1]/td[1]/p/b/text()')
 if len(p) != 1 or p[0] != 'License Number':
 	print "FFL search failed."
 else:
@@ -73,6 +78,8 @@ WHERE \
 	cursor.execute(sql)
 	db.commit()
 
+	# Print a message that can be pasted into the bound book.
+	# FIXME: This should actually update the bound book if required.
 	print "Disposed To:"
 	print name
 	print addr
