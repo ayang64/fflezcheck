@@ -82,14 +82,14 @@ def main(argv):
 	try:
 		opts, args = getopt.getopt(argv,"",["order-number=","cflc=","serials=","mailing","premises"])
 	except getopt.GetoptError:
-		print 'test.py -i <inputfile> -o <outputfile>'
+		print 'fflezcheck -i <inputfile> -o <outputfile>'
 		sys.exit(2)
 
 	ship_to_address_type = "premisis"
 
 	for opt, arg in opts:
 		if opt in ("-h", "--help"):
-			print 'test.py -i <inputfile> -o <outputfile>'
+			print 'fflezcheck -i <inputfile> -o <outputfile>'
 		elif opt in ("-p", "--premises"):
 			ship_to_address_type = "premises"
 		elif opt in ("-m", "--mailing"):
@@ -110,7 +110,6 @@ def main(argv):
 	# address = results[0] + "\n" + results[1] + "\n" + results[2] + ", " + results[3] + " " + results[4]
 	address = name + "\n" + addr + "\n" + city + ", " + state + " " + zip
 
-
 	if 'order' in locals():
 		db = MySQLdb.connect('localhost', 'root', '', 'lemonstand')
 
@@ -128,7 +127,6 @@ SET \
 WHERE \
 	id='%s'" % ( MySQLdb.escape_string(name), MySQLdb.escape_string(addr), MySQLdb.escape_string(city), state, zip, order )
 		cursor.execute(sql)
-
 
 		if 'order' in locals():
 			sql = " \
@@ -168,7 +166,6 @@ ON DUPLICATE KEY \
 
 		# Print a message that can be pasted into the bound book.
 		# FIXME: This should actually update the bound book if required.
-
 	print address
 	print args[0] + "-" + args[1] + "-XXX-XX-XX-" + args[2]
 	sys.stdout.flush()
